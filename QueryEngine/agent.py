@@ -19,7 +19,7 @@ from .nodes import (
     ReportFormattingNode
 )
 from .state import State
-from .tools import TavilyNewsAgency, TavilyResponse
+from .tools import TavilyAcademicAgency, TavilyResponse
 from .utils import Settings, format_search_results_for_prompt
 from loguru import logger
 
@@ -41,7 +41,7 @@ class DeepSearchAgent:
         self.llm_client = self._initialize_llm()
         
         # 初始化搜索工具集
-        self.search_agency = TavilyNewsAgency(api_key=self.config.TAVILY_API_KEY)
+        self.search_agency = TavilyAcademicAgency(api_key=self.config.TAVILY_API_KEY)
         
         # 初始化节点
         self._initialize_nodes()
@@ -54,7 +54,7 @@ class DeepSearchAgent:
         
         logger.info(f"Query Agent已初始化")
         logger.info(f"使用LLM: {self.llm_client.get_model_info()}")
-        logger.info(f"搜索工具集: TavilyNewsAgency (支持6种搜索工具)")
+        logger.info(f"搜索工具集: TavilyAcademicAgency (支持6种科研检索工具)")
     
     def _initialize_llm(self) -> LLMClient:
         """初始化LLM客户端"""
@@ -103,12 +103,12 @@ class DeepSearchAgent:
         
         Args:
             tool_name: 工具名称，可选值：
-                - "basic_search_news": 基础新闻搜索（快速、通用）
-                - "deep_search_news": 深度新闻分析
-                - "search_news_last_24_hours": 24小时内最新新闻
-                - "search_news_last_week": 本周新闻
-                - "search_images_for_news": 新闻图片搜索
-                - "search_news_by_date": 按日期范围搜索新闻
+                - "basic_scholarly_scan": 基础科研检索（快速、通用）
+                - "deep_research_review": 深度科研综述
+                - "search_latest_preprints": 24小时预印本追踪
+                - "search_recent_publications": 近期发表成果
+                - "search_visual_resources": 科研视觉素材搜索
+                - "search_publications_by_date": 按日期回溯成果
             query: 搜索查询
             **kwargs: 额外参数（如start_date, end_date, max_results）
             
@@ -117,26 +117,26 @@ class DeepSearchAgent:
         """
         logger.info(f"  → 执行搜索工具: {tool_name}")
         
-        if tool_name == "basic_search_news":
+        if tool_name == "basic_scholarly_scan":
             max_results = kwargs.get("max_results", 7)
-            return self.search_agency.basic_search_news(query, max_results)
-        elif tool_name == "deep_search_news":
-            return self.search_agency.deep_search_news(query)
-        elif tool_name == "search_news_last_24_hours":
-            return self.search_agency.search_news_last_24_hours(query)
-        elif tool_name == "search_news_last_week":
-            return self.search_agency.search_news_last_week(query)
-        elif tool_name == "search_images_for_news":
-            return self.search_agency.search_images_for_news(query)
-        elif tool_name == "search_news_by_date":
+            return self.search_agency.basic_scholarly_scan(query, max_results)
+        elif tool_name == "deep_research_review":
+            return self.search_agency.deep_research_review(query)
+        elif tool_name == "search_latest_preprints":
+            return self.search_agency.search_latest_preprints(query)
+        elif tool_name == "search_recent_publications":
+            return self.search_agency.search_recent_publications(query)
+        elif tool_name == "search_visual_resources":
+            return self.search_agency.search_visual_resources(query)
+        elif tool_name == "search_publications_by_date":
             start_date = kwargs.get("start_date")
             end_date = kwargs.get("end_date")
             if not start_date or not end_date:
-                raise ValueError("search_news_by_date工具需要start_date和end_date参数")
-            return self.search_agency.search_news_by_date(query, start_date, end_date)
+                raise ValueError("search_publications_by_date工具需要start_date和end_date参数")
+            return self.search_agency.search_publications_by_date(query, start_date, end_date)
         else:
-            logger.warning(f"  ⚠️  未知的搜索工具: {tool_name}，使用默认基础搜索")
-            return self.search_agency.basic_search_news(query)
+            logger.warning(f"  ⚠️  未知的搜索工具: {tool_name}，使用默认基础科研检索")
+            return self.search_agency.basic_scholarly_scan(query)
     
     def research(self, query: str, save_report: bool = True) -> str:
         """
@@ -228,7 +228,7 @@ class DeepSearchAgent:
         logger.info("  - 生成搜索查询...")
         search_output = self.first_search_node.run(search_input)
         search_query = search_output["search_query"]
-        search_tool = search_output.get("search_tool", "basic_search_news")  # 默认工具
+        search_tool = search_output.get("search_tool", "basic_scholarly_scan")  # 默认工具
         reasoning = search_output["reasoning"]
         
         logger.info(f"  - 搜索查询: {search_query}")
@@ -238,9 +238,9 @@ class DeepSearchAgent:
         # 执行搜索
         logger.info("  - 执行网络搜索...")
         
-        # 处理search_news_by_date的特殊参数
+        # 处理search_publications_by_date的特殊参数
         search_kwargs = {}
-        if search_tool == "search_news_by_date":
+        if search_tool == "search_publications_by_date":
             start_date = search_output.get("start_date")
             end_date = search_output.get("end_date")
             
@@ -251,12 +251,12 @@ class DeepSearchAgent:
                     search_kwargs["end_date"] = end_date
                     logger.info(f"  - 时间范围: {start_date} 到 {end_date}")
                 else:
-                    logger.info(f"  ⚠️  日期格式错误（应为YYYY-MM-DD），改用基础搜索")
+                    logger.info(f"  ⚠️  日期格式错误（应为YYYY-MM-DD），改用基础检索")
                     logger.info(f"      提供的日期: start_date={start_date}, end_date={end_date}")
-                    search_tool = "basic_search_news"
+                    search_tool = "basic_scholarly_scan"
             else:
-                logger.info(f"  ⚠️  search_news_by_date工具缺少时间参数，改用基础搜索")
-                search_tool = "basic_search_news"
+                logger.info(f"  ⚠️  search_publications_by_date工具缺少时间参数，改用基础检索")
+                search_tool = "basic_scholarly_scan"
         
         search_response = self.execute_search_tool(search_tool, search_query, **search_kwargs)
         
@@ -321,7 +321,7 @@ class DeepSearchAgent:
             # 生成反思搜索查询
             reflection_output = self.reflection_node.run(reflection_input)
             search_query = reflection_output["search_query"]
-            search_tool = reflection_output.get("search_tool", "basic_search_news")  # 默认工具
+            search_tool = reflection_output.get("search_tool", "basic_scholarly_scan")  # 默认工具
             reasoning = reflection_output["reasoning"]
             
             logger.info(f"    反思查询: {search_query}")
@@ -329,9 +329,9 @@ class DeepSearchAgent:
             logger.info(f"    反思推理: {reasoning}")
             
             # 执行反思搜索
-            # 处理search_news_by_date的特殊参数
+            # 处理search_publications_by_date的特殊参数
             search_kwargs = {}
-            if search_tool == "search_news_by_date":
+            if search_tool == "search_publications_by_date":
                 start_date = reflection_output.get("start_date")
                 end_date = reflection_output.get("end_date")
                 
@@ -342,12 +342,12 @@ class DeepSearchAgent:
                         search_kwargs["end_date"] = end_date
                         logger.info(f"    时间范围: {start_date} 到 {end_date}")
                     else:
-                        logger.info(f"    ⚠️  日期格式错误（应为YYYY-MM-DD），改用基础搜索")
+                        logger.info(f"    ⚠️  日期格式错误（应为YYYY-MM-DD），改用基础检索")
                         logger.info(f"        提供的日期: start_date={start_date}, end_date={end_date}")
-                        search_tool = "basic_search_news"
+                        search_tool = "basic_scholarly_scan"
                 else:
-                    logger.info(f"    ⚠️  search_news_by_date工具缺少时间参数，改用基础搜索")
-                    search_tool = "basic_search_news"
+                    logger.info(f"    ⚠️  search_publications_by_date工具缺少时间参数，改用基础检索")
+                    search_tool = "basic_scholarly_scan"
             
             search_response = self.execute_search_tool(search_tool, search_query, **search_kwargs)
             

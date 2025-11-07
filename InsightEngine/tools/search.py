@@ -1,26 +1,25 @@
 """
-专为 AI Agent 设计的本地舆情数据库查询工具集 (MediaCrawlerDB)
+专为 AI Agent 设计的科研传播数据库查询工具集 (ScholarlySignalsDB)
 
 版本: 3.0
-最后更新: 2025-08-23
+最后更新: 2025-08-24
 
-此脚本将复杂的本地MySQL数据库查询功能封装成一系列目标明确、参数清晰的独立工具，
-专为AI Agent调用而设计。Agent只需根据任务意图（如搜索热点、全局搜索话题、
-按时间范围分析、获取评论）选择合适的工具，无需编写复杂的SQL语句。
+此脚本将本地 MySQL 数据库中的科研传播与创新信号封装为一组参数明确的工具，
+支持自动化检索课题组动态、项目宣传、学术直播、政策发布等内容。
+Agent 只需根据任务意图（如筛选高影响力成果、回溯项目阶段、聚合评论反馈）
+选择合适的工具，无需直接编写 SQL。
 
 V3.0 核心更新:
-- 智能热度计算: `search_hot_content`不再需要`sort_by`参数，改为内部使用统一的加权热度算法，
-  综合点赞、评论、分享、观看等数据计算热度分值，使结果更智能、更符合综合热度。
-- 新增平台精搜工具: 新增 `search_topic_on_platform` 工具，作为特例，
-  允许Agent在特定平台（B站、微博等七大平台）上对某一话题进行精确搜索，并支持时间筛选。
-- 结构优化: 调整了数据结构与函数文档，以适应新功能。
+- 智能影响力计算：`search_hot_content` 使用统一的加权算法衡量互动度，可衡量科研传播热度。
+- 平台精搜工具：`search_topic_on_platform` 支持在特定渠道（如高校新闻、课题组视频号等）精确筛查。
+- 结构优化：调整数据结构与说明，方便扩展到新的科研传播源。
 
 主要工具:
-- search_hot_content: 查找指定时间范围内的综合热度最高的内容。
-- search_topic_globally: 在整个数据库中全局搜索与特定话题相关的所有内容和评论。
-- search_topic_by_date: 在指定的历史日期范围内搜索与特定话题相关的内容。
-- get_comments_for_topic: 专门提取公众对于某一特定话题的评论数据。
-- search_topic_on_platform: 在指定的单个社交媒体平台上搜索特定话题。
+- search_hot_content: 查找指定时间范围内传播影响力最高的科研信号。
+- search_topic_globally: 在数据库中全局检索与某个课题/团队相关的所有内容与评论。
+- search_topic_by_date: 按历史日期段回溯某个课题的传播记录。
+- get_comments_for_topic: 提取公众或同行对特定科研话题的评论反馈。
+- search_topic_on_platform: 聚焦单个平台（如高校官网、视频平台账号）检索特定话题。
 """
 
 import os
@@ -60,8 +59,8 @@ class DBResponse:
 
 # --- 2. 核心客户端与专用工具集 ---
 
-class MediaCrawlerDB:
-    """包含多种专用舆情数据库查询工具的客户端"""
+class ScholarlySignalsDB:
+    """包含多种科研传播数据库查询工具的客户端"""
     # 权重定义
     W_LIKE = 1.0
     W_COMMENT = 5.0
@@ -433,7 +432,7 @@ def print_response_summary(response: DBResponse):
 if __name__ == "__main__":
     
     try:
-        db_agent_tools = MediaCrawlerDB()
+        db_agent_tools = ScholarlySignalsDB()
         logger.info("数据库工具初始化成功，开始执行测试场景...\n")
         
         # 场景1: (新) 查找过去一周综合热度最高的内容 (不再需要sort_by)

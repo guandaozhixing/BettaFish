@@ -25,33 +25,31 @@
 
 ## ⚡ Project Overview
 
-**"BettaFish"** is an innovative multi-agent public opinion analysis system built from scratch. It helps break information cocoons, restore the original public sentiment, predict future trends, and assist decision-making. Users only need to raise analysis needs like chatting; the agents automatically analyze 30+ mainstream social platforms at home and abroad and millions of public comments.
+**"BettaFish"** is an end-to-end multi-agent **research intelligence** system. It continuously maps labs, topics, and funding ecosystems by fusing scholarly search, institutional portals, and community chatter. Stakeholders ask for insights conversationally; autonomous agents orchestrate deep dives across Google Scholar, arXiv, grant databases, university/lab websites, and researcher profiles to assemble executive-ready briefings.
 
 > Betta is a small yet combative and beautiful fish, symbolizing "small but powerful, fearless of challenges".
 
-See the system-generated research report on "Wuhan University Public Opinion": [In-depth Analysis Report on Wuhan University's Brand Reputation](./final_reports/final_report__20250827_131630.html)
+See the system-generated research report on "Next-Generation Photonics": [Strategic Landscape Report on Silicon Photonics Research](./final_reports/final_report__20250827_131630.html)
 
-See a complete system run example on "Wuhan University Public Opinion": [Video - In-depth Analysis Report on Wuhan University's Brand Reputation](https://www.bilibili.com/video/BV1TH1WBxEWN/?vd_source=da3512187e242ce17dceee4c537ec7a6#reply279744466833)
+Experience an end-to-end autonomous run on a frontier research topic: [Video - Automated Research Intelligence Demo](https://www.bilibili.com/video/BV1TH1WBxEWN/?vd_source=da3512187e242ce17dceee4c537ec7a6#reply279744466833)
 
-Beyond just report quality, compared to similar products, we have 🚀 six major advantages:
+Compared with traditional public-opinion dashboards, the research-edition of BettaFish delivers 🚀 six unique advantages:
 
-1. **AI-Driven Comprehensive Monitoring**: AI crawler clusters operate 24/7 non-stop, comprehensively covering 10+ key domestic and international social media platforms including Weibo, Xiaohongshu, TikTok, Kuaishou, etc. Not only capturing trending content in real-time, but also drilling down to massive user comments, letting you hear the most authentic and widespread public voice.
+1. **Scholarly-Aware Continuous Monitoring**: AI crawler clusters track 30+ global sources spanning Google Scholar, arXiv, fund announcements, university portals, PI homepages, and research-centric social channels—capturing publications, grants, job postings, and lab news in near real time.
 
-2. **Composite Analysis Engine Beyond LLM**: We not only rely on 5 types of professionally designed Agents, but also integrate middleware such as fine-tuned models and statistical models. Through multi-model collaborative work, we ensure the depth, accuracy, and multi-dimensional perspective of analysis results.
+2. **Composite Intelligence Stack**: Five dedicated Agents blend LLM reasoning with citation databases, custom ranking heuristics, and statistical baselines to provide trustworthy, multi-perspective academic insights.
 
-3. **Powerful Multimodal Capabilities**: Breaking through text and image limitations, capable of deep analysis of short video content from TikTok, Kuaishou, etc., and precisely extracting structured multimodal information cards such as weather, calendar, stocks from modern search engines, giving you comprehensive control over public opinion dynamics.
+3. **Multimodal Research Assets Extraction**: Beyond papers, the system analyses seminar videos, posters, datasets, and code repositories to build rich profiles of research themes, collaborators, and technology maturity.
 
-4. **Agent "Forum" Collaboration Mechanism**: Endowing different Agents with unique toolsets and thinking patterns, introducing a debate moderator model, conducting chain-of-thought collision and debate through the "forum" mechanism. This not only avoids the thinking limitations of single models and homogenization caused by communication, but also catalyzes higher-quality collective intelligence and decision support.
+4. **Forum-Style Agent Deliberation**: A host-moderated debate mechanism lets domain Agents challenge each other’s findings, yielding consensus narratives and highlighting uncertainty that decision makers must track.
 
-5. **Seamless Integration of Public and Private Domain Data**: The platform not only analyzes public opinion, but also provides high-security interfaces supporting seamless integration of your internal business databases with public opinion data. Breaking through data barriers, providing powerful analysis capabilities of "external trends + internal insights" for vertical businesses.
+5. **Hybrid Data Fusion**: Secure connectors merge public scholarly signals with your internal CRIS / lab management data, producing a unified view of "external discovery signals + internal pipeline".
 
-6. **Lightweight and Highly Extensible Framework**: Based on pure Python modular design, achieving lightweight, one-click deployment. Clear code structure allows developers to easily integrate custom models and business logic, enabling rapid platform expansion and deep customization.
+6. **Lightweight, Extensible Architecture**: Modular Python components make it simple to plug in domain-specific corpora, custom scoring rules, or proprietary models—scaling from a single research team to enterprise R&D intelligence.
 
-**Starting with public opinion, but not limited to public opinion**. The goal of "WeiYu" is to become a simple and universal data analysis engine that drives all business scenarios.
+**Born for research intelligence, but extensible to any knowledge-heavy workflow.** By swapping prompt/tool definitions you can pivot the framework to finance, legal due-diligence, or policy tracking.
 
-> For example, you only need to simply modify the API parameters and prompts of the Agent toolset to transform it into a financial market analysis system.
->
-> Here's a relatively active Linux.do project discussion thread: https://linux.do/t/topic/1009280
+> Community discussion and deployment notes (Chinese): https://linux.do/t/topic/1009280
 
 <div align="center">
 <img src="static/image/system_schematic.png" alt="banner" width="800">
@@ -83,13 +81,13 @@ Solomon LionCC BettaFish WeiYu Benefits: Open codecodex.ai Lion Programming Chan
 
 ### Overall Architecture Diagram
 
-**Insight Agent** Private Database Mining: AI agent for in-depth analysis of private public opinion databases
+**Insight Agent** Research Signals Mining: Extracts high-value updates from institutional archives, grant databases, and lab feeds
 
-**Media Agent** Multimodal Content Analysis: AI agent with powerful multimodal capabilities
+**Media Agent** Multimodal Evidence Analysis: Understands seminar videos, posters, datasets, and visual assets linked to research teams
 
-**Query Agent** Precise Information Search: AI agent with domestic and international web search capabilities
+**Query Agent** Global Scholarly Search: Connects to domestic and international scholarly resources, including Google Scholar and arXiv
 
-**Report Agent** Intelligent Report Generation: Multi-round report generation AI agent with built-in templates
+**Report Agent** Strategic Report Composer: Iteratively assembles long-form research intelligence briefings with citations and charts
 
 <div align="center">
 <img src="static/image/framework.png" alt="banner" width="800">
@@ -114,7 +112,7 @@ Solomon LionCC BettaFish WeiYu Benefits: Open codecodex.ai Lion Programming Chan
 
 ```
 Weibo_PublicOpinion_AnalysisSystem/
-├── QueryEngine/                   # Domestic and international news breadth search Agent
+├── QueryEngine/                   # Global scholarly discovery Agent
 │   ├── agent.py                   # Agent main logic
 │   ├── llms/                      # LLM interface wrapper
 │   ├── nodes/                     # Processing nodes
@@ -171,7 +169,7 @@ Weibo_PublicOpinion_AnalysisSystem/
 │   ├── config.py                  # Crawler configuration file
 │   ├── BroadTopicExtraction/      # Topic extraction module
 │   │   ├── database_manager.py    # Database manager
-│   │   ├── get_today_news.py      # Today's news fetching
+│   │   ├── get_today_news.py      # (legacy) news fetching helper
 │   │   ├── main.py                # Topic extraction main program
 │   │   └── topic_extractor.py     # Topic extractor
 │   ├── DeepSentimentCrawling/     # Deep sentiment crawling
@@ -414,7 +412,7 @@ cd MindSpider
 # Project initialization
 python main.py --setup
 
-# Run topic extraction (get hot news and keywords)
+# Run topic extraction (derive trending research signals and keywords)
 python main.py --broad-topic
 
 # Run complete crawler workflow
