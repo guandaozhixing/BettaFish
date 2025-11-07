@@ -4,17 +4,17 @@
 """
 
 from .search import (
-    TavilyNewsAgency, 
-    SearchResult, 
-    TavilyResponse, 
+    TavilyAcademicAgency,
+    SearchResult,
+    TavilyResponse,
     ImageResult,
     print_response_summary
 )
 
 __all__ = [
-    "TavilyNewsAgency", 
-    "SearchResult", 
-    "TavilyResponse", 
+    "TavilyAcademicAgency",
+    "SearchResult",
+    "TavilyResponse",
     "ImageResult",
     "print_response_summary"
 ]

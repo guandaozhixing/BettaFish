@@ -27,7 +27,7 @@ except ImportError as e:
     REPORT_ENGINE_AVAILABLE = False
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'Dedicated-to-creating-a-concise-and-versatile-public-opinion-analysis-platform'
+app.config['SECRET_KEY'] = 'Dedicated-to-advancing-an-automated-research-intelligence-platform'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # 注册ReportEngine Blueprint

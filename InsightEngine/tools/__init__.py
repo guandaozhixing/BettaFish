@@ -4,7 +4,7 @@
 """
 
 from .search import (
-    MediaCrawlerDB,
+    ScholarlySignalsDB,
     QueryResult,
     DBResponse,
     print_response_summary
@@ -23,7 +23,7 @@ from .sentiment_analyzer import (
 )
 
 __all__ = [
-    "MediaCrawlerDB",
+    "ScholarlySignalsDB",
     "QueryResult",
     "DBResponse",
     "print_response_summary",

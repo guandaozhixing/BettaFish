@@ -20,7 +20,7 @@ from .nodes import (
     ReportFormattingNode
 )
 from .state import State
-from .tools import MediaCrawlerDB, DBResponse, keyword_optimizer, multilingual_sentiment_analyzer
+from .tools import ScholarlySignalsDB, DBResponse, keyword_optimizer, multilingual_sentiment_analyzer
 from .utils.config import settings, Settings
 from .utils import format_search_results_for_prompt
 
@@ -42,7 +42,7 @@ class DeepSearchAgent:
         
         
         # 初始化搜索工具集
-        self.search_agency = MediaCrawlerDB()
+        self.search_agency = ScholarlySignalsDB()
         
         # 初始化情感分析器
         self.sentiment_analyzer = multilingual_sentiment_analyzer
@@ -58,7 +58,7 @@ class DeepSearchAgent:
         
         logger.info(f"Insight Agent已初始化")
         logger.info(f"使用LLM: {self.llm_client.get_model_info()}")
-        logger.info(f"搜索工具集: MediaCrawlerDB (支持5种本地数据库查询工具)")
+        logger.info(f"搜索工具集: ScholarlySignalsDB (支持5种科研传播查询工具)")
         logger.info(f"情感分析: WeiboMultilingualSentiment (支持22种语言的情感分析)")
     
     def _initialize_llm(self) -> LLMClient:

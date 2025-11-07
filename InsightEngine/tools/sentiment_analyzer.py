@@ -436,7 +436,7 @@ class WeiboMultilingualSentimentAnalyzer:
                             min_confidence: float = 0.5) -> Dict[str, Any]:
         """
         对查询结果进行情感分析
-        专门用于分析从MediaCrawlerDB返回的查询结果
+        专门用于分析从ScholarlySignalsDB返回的查询结果
         
         Args:
             query_results: 查询结果列表，每个元素包含文本内容
